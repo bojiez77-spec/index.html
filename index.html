@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DAILY RUNWAY - 穿搭日常</title>
+  <title>DAILY RUNWAY - Google 登入測試</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google 官方登入 SDK -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-
   <script>
     tailwind.config = {
       theme: {
@@ -22,407 +22,131 @@
       }
     }
 
-    // ======AQ.Ab8RN6KWLJx8pPbNBKOdVP2NKdX7-dnRGqEdGvxPlrQKWYe5xg======
-    const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
-    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; // 在這裡貼上你的 Gemini API Key
-    // =================================
+    // ====== 請在下方替換成你的 Google 用戶端 ID ======
+    const GOOGLE_CLIENT_ID = "830654234554-
+u1912qvvcte7hu4cto1du8skikkacugp.apps.googleusercontent.com";
+    // ===============================================
 
-    let currentUser = JSON.parse(localStorage.getItem('runway_user')) || null;
+    let currentUser = JSON.parse(localStorage.getItem('runway_test_user')) || null;
   </script>
-  <style>
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    @keyframes pulse-ring {
-      0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.06); opacity: 1; }
-    }
-    .runway-ring { animation: pulse-ring 3s infinite ease-in-out; }
-  </style>
 </head>
-<body class="bg-darkBg text-white min-h-screen flex flex-col justify-between select-none font-sans overflow-x-hidden">
+<body class="bg-darkBg text-white min-h-screen flex flex-col justify-between font-sans p-6 select-none">
 
-  <!-- 頂部頁面導航 -->
-  <div class="fixed top-2 left-1/2 -translate-x-1/2 z-50 flex space-x-1.5 bg-black/85 backdrop-blur px-3 py-1 rounded-full border border-darkBorder text-[11px]">
-    <button onclick="goToScreen(1)" id="btn-tab-1" class="px-2.5 py-0.5 rounded-full font-bold bg-limeBrand text-black">1. 導引</button>
-    <button onclick="goToScreen(2)" id="btn-tab-2" class="px-2.5 py-0.5 rounded-full text-gray-400">2. 伸展台</button>
-    <button onclick="openPublishModal()" class="px-2.5 py-0.5 rounded-full bg-limeBrand/20 text-limeBrand font-bold border border-limeBrand/50">+ 發布穿搭</button>
+  <!-- 頂部標題 -->
+  <div>
+    <div class="text-[11px] font-mono text-limeBrand font-bold uppercase tracking-widest">STEP 1 TEST</div>
+    <h1 class="text-xl font-bold mt-1">Google 帳號一鍵登入測試</h1>
+    <p class="text-xs text-gray-400 mt-1">驗證用戶端授權、自動獲取頭像與模特身分。</p>
   </div>
 
-  <div class="w-full min-h-screen flex flex-col pt-8">
-
-    <!-- 畫面 1: 3 步驟滑動導引頁 -->
-    <div id="screen-1" class="min-h-screen bg-limeBrand text-black p-6 flex flex-col justify-between relative transition-all duration-300">
-      <div class="pt-6 flex items-center justify-between">
-        <div class="flex space-x-2 w-1/2">
-          <div id="step-bar-1" class="h-1.5 bg-black rounded-full flex-1"></div>
-          <div id="step-bar-2" class="h-1.5 bg-black/25 rounded-full flex-1"></div>
-          <div id="step-bar-3" class="h-1.5 bg-black/25 rounded-full flex-1"></div>
-        </div>
-        <button onclick="goToScreen(2)" class="text-xs font-bold text-black/70">Skip</button>
-      </div>
-
-      <div class="mt-6 z-10 flex-1 flex flex-col justify-between">
-        <div>
-          <span id="slide-step-badge" class="px-2 py-0.5 bg-black/10 rounded text-[10px] font-mono font-bold tracking-wider uppercase">Step 01 / 03</span>
-          <h1 id="slide-title" class="text-3xl font-black leading-tight text-neutral-900 tracking-tight mt-2">
-            Discover trendy<br/>outfits and build your<br/>unique look<br/>effortlessly.
-          </h1>
-          <p id="slide-desc" class="text-xs text-neutral-800 mt-2 font-medium">3 秒快速快拍，不需要複雜修圖，展現最真實的個人日常美學。</p>
-        </div>
-
-        <div class="relative flex items-end justify-center overflow-hidden my-4">
-          <img id="slide-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=700&auto=format&fit=crop" class="w-[260px] h-[320px] object-cover rounded-t-full drop-shadow-2xl" alt="Model">
-        </div>
-
-        <div class="pb-4">
-          <button onclick="nextSlide()" class="w-full py-3.5 bg-black text-white rounded-full text-xs font-bold flex items-center justify-center space-x-2 shadow-xl active:scale-95 transition">
-            <span id="slide-btn-text">下一頁 Next (1/3)</span>
-            <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
-          </button>
-        </div>
-      </div>
+  <!-- 登入狀態展示卡片 -->
+  <div class="my-auto bg-darkCard border border-darkBorder rounded-3xl p-6 flex flex-col items-center text-center space-y-4 shadow-xl">
+    
+    <!-- 頭像預覽 -->
+    <div id="avatar-container" class="w-20 h-20 rounded-full bg-neutral-800 border-2 border-limeBrand flex items-center justify-center overflow-hidden">
+      <i data-lucide="user" class="w-8 h-8 text-gray-400"></i>
     </div>
 
-    <!-- 畫面 2: 即時伸展台 (首頁) -->
-    <div id="screen-2" class="min-h-screen bg-darkBg text-white flex-col hidden pb-24">
-      <div class="px-5 pt-4 pb-2 flex justify-between items-center">
-        <div class="flex items-center space-x-2.5">
-          <div id="user-avatar-box" class="w-9 h-9 rounded-full bg-limeBrand text-black font-bold flex items-center justify-center text-xs overflow-hidden border border-limeBrand">
-            YOU
-          </div>
-          <div>
-            <div class="text-[10px] text-gray-400">DAILY RUNWAY CREATOR</div>
-            <div id="user-name-text" class="text-xs font-bold text-white">點此登入 Google 帳號</div>
-          </div>
-        </div>
-
-        <div id="auth-action-area">
-          <button onclick="triggerGoogleLogin()" class="px-2.5 py-1 bg-white text-black font-bold rounded-full text-[11px] flex items-center space-x-1 active:scale-95 transition">
-            <svg class="w-3 h-3" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-            <span>登入</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="px-5 space-y-4 mt-2">
-        <div class="rounded-2xl p-4 bg-gradient-to-r from-blue-900/60 via-purple-900/40 to-darkCard border border-darkBorder flex items-center justify-between">
-          <div>
-            <span class="text-[10px] font-mono text-limeBrand font-bold uppercase tracking-wider">今日主題 • 隨手拍</span>
-            <h3 class="text-base font-extrabold text-white mt-0.5">#電梯鏡面隨意拍 🪞</h3>
-            <p class="text-[11px] text-gray-300 mt-1">AI 自動為你辨識單品與風格</p>
-          </div>
-          <button onclick="openPublishModal()" class="px-3 py-1.5 bg-limeBrand text-black rounded-xl text-xs font-bold shadow-lg shadow-limeBrand/20 active:scale-95 transition">
-            登場發布
-          </button>
-        </div>
-
-        <div>
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">最新登場 Real Looks</h3>
-            <span class="text-[10px] text-limeBrand">即時更新</span>
-          </div>
-          <div class="grid grid-cols-2 gap-3" id="posts-grid"></div>
-        </div>
-      </div>
-
-      <div class="fixed bottom-0 left-0 right-0 h-16 bg-darkBg/95 backdrop-blur border-t border-darkBorder flex justify-around items-center px-4 z-40">
-        <button onclick="goToScreen(2)" class="text-limeBrand flex flex-col items-center"><i data-lucide="compass" class="w-5 h-5"></i><span class="text-[9px] mt-0.5 font-bold">探索</span></button>
-        <button onclick="openPublishModal()" class="w-12 h-12 -mt-6 rounded-full bg-limeBrand text-black flex items-center justify-center shadow-lg shadow-limeBrand/30 font-bold active:scale-90 transition">
-          <i data-lucide="camera" class="w-6 h-6 stroke-[2.5]"></i>
-        </button>
-        <button onclick="triggerProfileClick()" class="text-gray-400 flex flex-col items-center"><i data-lucide="user" class="w-5 h-5"></i><span class="text-[9px] mt-0.5">我的</span></button>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- 發布彈窗 (整合 Gemini AI 穿搭自動辨識) -->
-  <div id="publish-modal" class="fixed inset-0 bg-black/95 z-50 flex flex-col justify-between p-5 hidden overflow-y-auto">
+    <!-- 用戶資料文字 -->
     <div>
-      <div class="flex justify-between items-center mb-4">
-        <button onclick="closePublishModal()" class="p-2 rounded-full bg-darkCard text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-        <span class="text-xs font-bold text-limeBrand uppercase font-mono tracking-wider">發布今日穿搭 (NEW LOOK)</span>
-        <div class="w-8"></div>
+      <div id="user-status-badge" class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-800 text-gray-400 mb-1">
+        尚未登入
       </div>
-
-      <div class="space-y-3">
-        <!-- 圖片上傳區與 AI 辨識動畫覆蓋層 -->
-        <div onclick="document.getElementById('file-input').click()" class="w-full h-64 bg-darkCard rounded-3xl border-2 border-dashed border-gray-600 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer">
-          <img id="preview-img" class="w-full h-full object-cover hidden" alt="Preview">
-          
-          <div id="upload-placeholder" class="text-center p-4">
-            <i data-lucide="camera" class="w-10 h-10 text-limeBrand mx-auto mb-2"></i>
-            <span class="text-xs font-bold text-white block">拍照 / 選取穿搭照片</span>
-            <span class="text-[10px] text-limeBrand block mt-1">✨ 選取後 Gemini AI 會自動幫你打標籤！</span>
-          </div>
-
-          <!-- AI 分析中提示 -->
-          <div id="ai-loading" class="absolute inset-0 bg-black/80 backdrop-blur flex flex-col items-center justify-center hidden">
-            <div class="w-8 h-8 border-3 border-limeBrand border-t-transparent rounded-full animate-spin"></div>
-            <span class="text-xs font-bold text-limeBrand mt-3">✨ Gemini 正在辨識單品與風格...</span>
-          </div>
-        </div>
-
-        <input type="file" id="file-input" accept="image/*" capture="environment" class="hidden" onchange="handleFileSelect(event)">
-
-        <div class="space-y-2 text-xs">
-          <div>
-            <label class="text-gray-400 text-[10px] uppercase font-bold">發布者</label>
-            <input type="text" id="input-username" readonly class="w-full bg-darkCard/50 border border-darkBorder rounded-xl p-3 text-limeBrand font-medium mt-1">
-          </div>
-          <div>
-            <label class="text-gray-400 text-[10px] uppercase font-bold">穿搭主題（AI 自動產生，可修改）</label>
-            <input type="text" id="input-title" placeholder="拍照後 AI 將自動填入主題..." class="w-full bg-darkCard border border-darkBorder rounded-xl p-3 text-white focus:outline-none focus:border-limeBrand mt-1">
-          </div>
-          <div>
-            <label class="text-gray-400 text-[10px] uppercase font-bold">身上單品標籤（AI 自動辨識）</label>
-            <input type="text" id="input-tags" placeholder="拍照後 AI 將自動辨識服飾與單品..." class="w-full bg-darkCard border border-darkBorder rounded-xl p-3 text-limeBrand font-medium focus:outline-none focus:border-limeBrand mt-1">
-          </div>
-        </div>
-      </div>
+      <h2 id="display-name" class="text-base font-bold text-white">訪客模特</h2>
+      <p id="display-email" class="text-xs text-gray-400 mt-0.5">點擊下方按鈕以 Google 帳號授權</p>
     </div>
 
-    <div class="pt-4">
-      <button id="btn-submit" onclick="submitPost()" class="w-full py-3.5 bg-limeBrand text-black font-bold rounded-2xl text-xs shadow-lg shadow-limeBrand/20 active:scale-95 transition flex items-center justify-center space-x-1.5">
-        <i data-lucide="send" class="w-4 h-4"></i>
-        <span>即刻發布至伸展台</span>
+    <!-- 登入 / 登出按鈕區 -->
+    <div class="w-full pt-2">
+      <button id="btn-login" onclick="triggerGoogleLogin()" class="w-full py-3 bg-white text-black font-bold rounded-2xl text-xs flex items-center justify-center space-x-2 active:scale-95 transition shadow-lg">
+        <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        <span>使用 Google 帳號快速登入</span>
+      </button>
+
+      <button id="btn-logout" onclick="logout()" class="w-full py-3 bg-neutral-800 text-red-400 font-bold rounded-2xl text-xs hidden active:scale-95 transition">
+        登出帳號
       </button>
     </div>
+
+  </div>
+
+  <!-- 底部說明 -->
+  <div class="text-center text-[11px] text-gray-500">
+    測試成功後，這組登入身分將直接套用至穿搭發布與個人衣櫥[span_2](start_span)[span_2](end_span)。
   </div>
 
   <script>
     lucide.createIcons();
 
-    // 迎賓輪播
-    let currentSlide = 0;
-    const slidesData = [
-      { badge: "Step 01 / 03", title: "Discover trendy<br/>outfits and build your<br/>unique look<br/>effortlessly.", desc: "3 秒快速快拍，不需要複雜修圖，展現最真實的個人日常美學。", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=700", btnText: "下一頁 Next (1/3)" },
-      { badge: "Step 02 / 03", title: "Micro-Style<br/>Communities for<br/>Real Creators.", desc: "打破演算法焦慮，Gorpcore、City Boy、二手古著都能找到懂你的同好。", image: "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=700", btnText: "下一頁 Next (2/3)" },
-      { badge: "Step 03 / 03", title: "Your Daily Runway,<br/>Ready Whenever<br/>You Are.", desc: "下樓買咖啡、通勤電梯鏡面，隨時隨地開啟屬於你的伸展台。", image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=700", btnText: "即刻登場 Get Started 🚀" }
-    ];
-
-    function nextSlide() {
-      if (currentSlide < 2) {
-        currentSlide++;
-        updateSlideUI();
-      } else {
-        goToScreen(2);
-      }
-    }
-
-    function updateSlideUI() {
-      const data = slidesData[currentSlide];
-      document.getElementById('slide-step-badge').innerText = data.badge;
-      document.getElementById('slide-title').innerHTML = data.title;
-      document.getElementById('slide-desc').innerText = data.desc;
-      document.getElementById('slide-image').src = data.image;
-      document.getElementById('slide-btn-text').innerText = data.btnText;
-      for (let i = 1; i <= 3; i++) {
-        document.getElementById(`step-bar-${i}`).className = (i - 1 <= currentSlide) ? "h-1.5 bg-black rounded-full flex-1" : "h-1.5 bg-black/25 rounded-full flex-1";
-      }
-    }
-
-    function goToScreen(num) {
-      document.getElementById('screen-1').classList.add('hidden');
-      document.getElementById('screen-2').classList.add('hidden');
-      document.getElementById(`screen-${num}`).classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (num === 2) {
-        updateUserUI();
-        renderPosts();
-      }
-    }
-
-    // Google 登入處理
     function triggerGoogleLogin() {
       if (typeof google === 'undefined') {
-        alert("Google 登入服務載入中，請稍候。");
+        alert("Google 登入套件載入中，請稍候再點一次。");
         return;
       }
+      if (GOOGLE_CLIENT_ID.includes("YOUR_GOOGLE_CLIENT_ID")) {
+        alert("請先在程式碼第 19 行填入你的 Google Client ID！");
+        return;
+      }
+
       google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
-        callback: (res) => {
-          const payload = JSON.parse(atob(res.credential.split('.')[1]));
-          currentUser = { name: payload.name, email: payload.email, avatar: payload.picture };
-          localStorage.setItem('runway_user', JSON.stringify(currentUser));
-          updateUserUI();
-          alert(`歡迎登場，${currentUser.name}！`);
-        }
+        callback: handleCredentialResponse
       });
       google.accounts.id.prompt();
     }
 
-    function updateUserUI() {
-      const nameText = document.getElementById('user-name-text');
-      const avatarBox = document.getElementById('user-avatar-box');
-      const actionArea = document.getElementById('auth-action-area');
-      const inputUsername = document.getElementById('input-username');
+    function handleCredentialResponse(response) {
+      try {
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        currentUser = {
+          name: payload.name,
+          email: payload.email,
+          avatar: payload.picture
+        };
+        localStorage.setItem('runway_test_user', JSON.stringify(currentUser));
+        renderUserUI();
+        alert(`🎉 登入成功！歡迎 ${currentUser.name} 登上伸展台！`);
+      } catch (err) {
+        alert("解析登入資料失敗: " + err.message);
+      }
+    }
+
+    function renderUserUI() {
+      const avatarBox = document.getElementById('avatar-container');
+      const nameEl = document.getElementById('display-name');
+      const emailEl = document.getElementById('display-email');
+      const badgeEl = document.getElementById('user-status-badge');
+      const loginBtn = document.getElementById('btn-login');
+      const logoutBtn = document.getElementById('btn-logout');
 
       if (currentUser) {
-        nameText.innerText = currentUser.name;
         avatarBox.innerHTML = `<img src="${currentUser.avatar}" class="w-full h-full object-cover">`;
-        actionArea.innerHTML = `<button onclick="logout()" class="text-[10px] text-gray-500 hover:text-red-400">登出</button>`;
-        if (inputUsername) inputUsername.value = currentUser.name;
+        nameEl.innerText = currentUser.name;
+        emailEl.innerText = currentUser.email;
+        badgeEl.className = "inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-limeBrand/20 text-limeBrand mb-1";
+        badgeEl.innerText = "已登入身分驗證";
+        loginBtn.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
       } else {
-        nameText.innerText = "點此登入 Google 帳號";
-        avatarBox.innerHTML = "YOU";
-        actionArea.innerHTML = `<button onclick="triggerGoogleLogin()" class="px-2.5 py-1 bg-white text-black font-bold rounded-full text-[11px] flex items-center space-x-1"><svg class="w-3 h-3" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg><span>登入</span></button>`;
-        if (inputUsername) inputUsername.value = "匿名素人模特";
+        avatarBox.innerHTML = `<i data-lucide="user" class="w-8 h-8 text-gray-400"></i>`;
+        nameEl.innerText = "訪客模特";
+        emailEl.innerText = "點擊下方按鈕以 Google 帳號授權";
+        badgeEl.className = "inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-800 text-gray-400 mb-1";
+        badgeEl.innerText = "尚未登入";
+        loginBtn.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
+        lucide.createIcons();
       }
     }
 
     function logout() {
       currentUser = null;
-      localStorage.removeItem('runway_user');
-      updateUserUI();
+      localStorage.removeItem('runway_test_user');
+      renderUserUI();
     }
 
-    function triggerProfileClick() {
-      if (!currentUser) triggerGoogleLogin();
-      else alert(`目前以 ${currentUser.name} 身分登場中。`);
-    }
-
-    // 發布表單與 Gemini AI 辨識
-    let selectedImageBase64 = null;
-    function openPublishModal() {
-      updateUserUI();
-      document.getElementById('publish-modal').classList.remove('hidden');
-    }
-    function closePublishModal() {
-      document.getElementById('publish-modal').classList.add('hidden');
-    }
-
-    function handleFileSelect(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const img = new Image();
-        img.onload = async function() {
-          const canvas = document.createElement('canvas');
-          const maxDim = 800;
-          let w = img.width, h = img.height;
-          if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
-          else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
-          canvas.width = w; canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, w, h);
-          selectedImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
-
-          document.getElementById('preview-img').src = selectedImageBase64;
-          document.getElementById('preview-img').classList.remove('hidden');
-          document.getElementById('upload-placeholder').classList.add('hidden');
-
-          // 呼叫 Gemini AI 進行單品分析
-          if (GEMINI_API_KEY && !GEMINI_API_KEY.includes("YOUR_GEMINI_API_KEY")) {
-            await analyzeOutfitWithGemini(selectedImageBase64);
-          }
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // Gemini API 呼叫實作
-    async function analyzeOutfitWithGemini(base64Image) {
-      const aiLoading = document.getElementById('ai-loading');
-      aiLoading.classList.remove('hidden');
-
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-      const prompt = `這是一張日常穿搭 OOTD 照片。請辨識出此穿搭的主題風格（例如：雨天機能通勤、City Boy寬版混搭、日系復古古著），並列出身上看得到的 3 到 4 個具體單品或配件名稱。
-      請直接回傳 JSON 格式（不要回傳其他多餘字元或 markdown 符號）：
-      {"title": "穿搭主題標題", "items": ["單品1", "單品2", "單品3"]}`;
-
-      try {
-        const response = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{
-              parts: [
-                { text: prompt },
-                { inline_data: { mime_type: "image/jpeg", data: base64Image.split(',')[1] } }
-              ]
-            }]
-          })
-        });
-
-        const data = await response.json();
-        const textResult = data.candidates[0].content.parts[0].text.replace(/```json/g, '').replace(/```/g, '').trim();
-        const parsed = JSON.parse(textResult);
-
-        // 自動將 AI 分析結果填入表單
-        if (parsed.title) document.getElementById('input-title').value = parsed.title;
-        if (parsed.items) document.getElementById('input-tags').value = parsed.items.join(' ');
-      } catch (err) {
-        console.error("Gemini 辨識發生錯誤:", err);
-      } finally {
-        aiLoading.classList.add('hidden');
-      }
-    }
-
-    function submitPost() {
-      if (!selectedImageBase64) {
-        alert("請先拍攝或上傳穿搭照！");
-        return;
-      }
-      const title = document.getElementById('input-title').value.trim() || "今日隨性穿搭";
-      const uName = currentUser ? currentUser.name : "匿名素人模特";
-      const uAvatar = currentUser ? currentUser.avatar : null;
-      const tags = document.getElementById('input-tags').value.trim().split(" ").filter(t => t);
-
-      const posts = JSON.parse(localStorage.getItem('wearyu_posts') || '[]');
-      posts.unshift({
-        id: Date.now(),
-        user_name: uName,
-        user_avatar: uAvatar,
-        title: title,
-        image_url: selectedImageBase64,
-        items: tags
-      });
-      localStorage.setItem('wearyu_posts', JSON.stringify(posts));
-
-      alert("🎉 恭喜！你的穿搭已成功登上 DAILY RUNWAY 伸展台！");
-      closePublishModal();
-      document.getElementById('preview-img').classList.add('hidden');
-      document.getElementById('upload-placeholder').classList.remove('hidden');
-      document.getElementById('input-title').value = '';
-      document.getElementById('input-tags').value = '';
-      selectedImageBase64 = null;
-      goToScreen(2);
-    }
-
-    function renderPosts() {
-      const container = document.getElementById('posts-grid');
-      let posts = JSON.parse(localStorage.getItem('wearyu_posts') || '[]');
-      if (posts.length === 0) {
-        posts = [
-          { id: 1, user_name: "Alex", title: "機能雨天通勤搭配", image_url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500", items: ["Arc'teryx", "Salomon"] },
-          { id: 2, user_name: "Kai", title: "寬版丹寧古著", image_url: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500", items: ["Vintage", "Lee"] }
-        ];
-      }
-      container.innerHTML = "";
-      posts.forEach(p => {
-        const itemTagsHtml = (p.items || []).map(tag => `<span class="px-1.5 py-0.5 bg-black/60 rounded text-[9px] text-limeBrand mr-1">#${tag}</span>`).join('');
-        const avatarImg = p.user_avatar ? `<img src="${p.user_avatar}" class="w-3.5 h-3.5 rounded-full mr-1 inline">` : '';
-        const card = document.createElement('div');
-        card.className = "bg-darkCard rounded-2xl overflow-hidden border border-darkBorder p-2 flex flex-col";
-        card.innerHTML = `
-          <div class="h-44 rounded-xl bg-neutral-800 overflow-hidden relative">
-            <img src="${p.image_url}" class="w-full h-full object-cover" alt="Outfit">
-            <div class="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/70 backdrop-blur text-[10px] font-mono text-limeBrand font-bold">Real Look</div>
-          </div>
-          <div class="mt-2 px-1">
-            <div class="text-xs font-bold text-white truncate">${p.title}</div>
-            <div class="text-[11px] text-gray-400 mt-0.5 flex items-center">${avatarImg}<span>${p.user_name}</span></div>
-            <div class="mt-1 flex flex-wrap gap-1">${itemTagsHtml}</div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    updateUserUI();
+    // 初始化渲染
+    renderUserUI();
   </script>
 </body>
 </html>
