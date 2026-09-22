@@ -28,54 +28,74 @@
       50% { transform: scale(1.06); opacity: 1; }
     }
     .runway-ring { animation: pulse-ring 3s infinite ease-in-out; }
+    @keyframes tag-blink {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(145, 224, 0, 0.7); }
+      50% { transform: scale(1.15); box-shadow: 0 0 20px rgba(145, 224, 0, 1); }
+    }
+    .tag-point { animation: tag-blink 1.8s infinite ease-in-out; }
   </style>
 </head>
 <body class="bg-darkBg text-white min-h-screen flex flex-col justify-between select-none font-sans overflow-x-hidden">
 
-  <!-- 頂部測試切換選單（方便手機測試） -->
-  <div class="fixed top-2 left-1/2 -translate-x-1/2 z-50 flex space-x-1.5 bg-black/80 backdrop-blur px-3 py-1.5 rounded-full border border-darkBorder text-[11px]">
-    <button onclick="goToScreen(1)" id="btn-tab-1" class="px-2.5 py-0.5 rounded-full font-bold bg-limeBrand text-black">1. 歡迎</button>
-    <button onclick="goToScreen(2)" id="btn-tab-2" class="px-2.5 py-0.5 rounded-full text-gray-400">2. 首頁</button>
-    <button onclick="goToScreen(3)" id="btn-tab-3" class="px-2.5 py-0.5 rounded-full text-gray-400">3. 詳情</button>
+  <!-- 頂部快速切換快捷列 -->
+  <div class="fixed top-2 left-1/2 -translate-x-1/2 z-50 flex space-x-1.5 bg-black/85 backdrop-blur px-3 py-1 rounded-full border border-darkBorder text-[11px]">
+    <button onclick="goToScreen(1)" id="btn-tab-1" class="px-2.5 py-0.5 rounded-full font-bold bg-limeBrand text-black">1. 導引</button>
+    <button onclick="goToScreen(2)" id="btn-tab-2" class="px-2.5 py-0.5 rounded-full text-gray-400">2. 探索</button>
+    <button onclick="goToScreen(3)" id="btn-tab-3" class="px-2.5 py-0.5 rounded-full text-gray-400">3. 穿搭</button>
+    <button onclick="goToScreen(4)" id="btn-tab-4" class="px-2.5 py-0.5 rounded-full text-gray-400">4. 衣櫥</button>
   </div>
 
-  <!-- 主容器 -->
   <div class="w-full min-h-screen flex flex-col pt-8">
 
-    <!-- 畫面 1: 歡迎引導頁 (Onboarding) -->
-    <div id="screen-1" class="min-h-screen bg-limeBrand text-black p-6 flex flex-col justify-between relative">
+    <!-- ==============================================
+         畫面 1: 3 步驟滑動導引頁 (支援手機觸控滑動)
+    =============================================== -->
+    <div id="screen-1" class="min-h-screen bg-limeBrand text-black p-6 flex flex-col justify-between relative transition-all duration-300 touch-pan-y"
+         ontouchstart="handleTouchStart(event)" ontouchend="handleTouchEnd(event)">
+      
       <div class="pt-6 flex items-center justify-between">
-        <div class="flex space-x-1.5 w-1/2">
-          <div class="h-1.5 bg-black rounded-full flex-1"></div>
-          <div class="h-1.5 bg-black/20 rounded-full flex-1"></div>
-          <div class="h-1.5 bg-black/20 rounded-full flex-1"></div>
+        <div class="flex space-x-2 w-1/2">
+          <div id="step-bar-1" class="h-1.5 bg-black rounded-full flex-1 transition-all"></div>
+          <div id="step-bar-2" class="h-1.5 bg-black/25 rounded-full flex-1 transition-all"></div>
+          <div id="step-bar-3" class="h-1.5 bg-black/25 rounded-full flex-1 transition-all"></div>
         </div>
         <button onclick="goToScreen(2)" class="text-xs font-bold text-black/70">Skip</button>
       </div>
 
-      <div class="mt-8 z-10">
-        <h1 class="text-3xl font-black leading-tight text-neutral-900 tracking-tight">
-          Discover trendy<br/>outfits and build your<br/>unique look<br/>effortlessly.
-        </h1>
-        <button onclick="goToScreen(2)" class="mt-5 px-6 py-3 bg-black text-white rounded-full text-xs font-bold flex items-center space-x-2 shadow-xl">
-          <span>Get Started</span>
-          <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
-        </button>
-      </div>
+      <div class="mt-6 z-10 flex-1 flex flex-col justify-between">
+        <div>
+          <span id="slide-step-badge" class="px-2 py-0.5 bg-black/10 rounded text-[10px] font-mono font-bold tracking-wider uppercase">Step 01 / 03 • 日常走秀</span>
+          <h1 id="slide-title" class="text-3xl font-black leading-tight text-neutral-900 tracking-tight mt-2">
+            Discover trendy<br/>outfits and build your<br/>unique look<br/>effortlessly.
+          </h1>
+          <p id="slide-desc" class="text-xs text-neutral-800 mt-2 font-medium">
+            3 秒快速快拍，不需要複雜修圖，展現最真實的個人日常美學。
+          </p>
+        </div>
 
-      <div class="relative flex items-end justify-center overflow-hidden -mx-6 -mb-6 mt-4">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=700&auto=format&fit=crop" class="w-[290px] h-[360px] object-cover rounded-t-full drop-shadow-2xl" alt="Model">
+        <div class="relative flex items-end justify-center overflow-hidden my-4">
+          <img id="slide-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=700&auto=format&fit=crop" class="w-[260px] h-[320px] object-cover rounded-t-full drop-shadow-2xl transition duration-500" alt="Model">
+        </div>
+
+        <div class="pb-4">
+          <button id="slide-next-btn" onclick="nextSlide()" class="w-full py-3.5 bg-black text-white rounded-full text-xs font-bold flex items-center justify-center space-x-2 shadow-xl active:scale-95 transition">
+            <span id="slide-btn-text">下一頁 Next (1/3)</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- 畫面 2: 個人化靈感首頁 (Feed) -->
+    <!-- ==============================================
+         畫面 2: 個人化推薦首頁 (Explore Feed)
+    =============================================== -->
     <div id="screen-2" class="min-h-screen bg-darkBg text-white flex-col hidden pb-24">
       <div class="px-5 pt-4 pb-2 flex justify-between items-center">
         <div class="flex items-center space-x-2.5">
           <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop" class="w-9 h-9 rounded-full object-cover border border-limeBrand" alt="Avatar">
           <div>
             <div class="text-[10px] text-gray-400">Welcome back</div>
-            <div class="text-xs font-bold text-white">Dianne Russell</div>
+            <div class="text-xs font-bold text-white">Daily Creator #01</div>
           </div>
         </div>
         <button class="w-8 h-8 rounded-full bg-darkCard border border-darkBorder flex items-center justify-center text-gray-300">
@@ -88,130 +108,393 @@
           Handpicked <span class="text-gray-400 font-normal">Looks</span><br/>Just for You
         </h2>
 
+        <!-- 搜尋列 -->
         <div class="flex items-center space-x-2 bg-darkCard border border-darkBorder rounded-2xl px-3 py-2 text-xs">
-          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-limeBrand"></i>
-          <span class="text-gray-300 font-medium">California, USA</span>
+          <i data-lucide="compass" class="w-3.5 h-3.5 text-limeBrand"></i>
+          <span class="text-gray-300 font-medium">探索穿搭圈</span>
           <span class="text-gray-600">|</span>
-          <span class="text-gray-500 flex-1 truncate">Search here...</span>
+          <span class="text-gray-500 flex-1 truncate">搜尋風格、品牌、標籤...</span>
           <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400"></i>
         </div>
 
+        <!-- 每日主題跑道 Banner -->
         <div class="rounded-2xl p-4 bg-gradient-to-r from-blue-900/60 via-purple-900/40 to-darkCard border border-darkBorder flex items-center justify-between">
-          <h3 class="text-base font-extrabold text-white">Discover<br/>New Trends</h3>
-          <img src="https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=300&auto=format&fit=crop" class="w-16 h-16 object-cover rounded-full border border-limeBrand/40" alt="Trend">
+          <div>
+            <span class="text-[10px] font-mono text-limeBrand font-bold uppercase tracking-wider">今日主題 • 隨性不隨便</span>
+            <h3 class="text-base font-extrabold text-white mt-0.5">#電梯鏡面隨意拍 🪞</h3>
+            <p class="text-[11px] text-gray-300 mt-1">1,420 位素人模特已登場</p>
+          </div>
+          <button onclick="openCameraModal()" class="px-3 py-1.5 bg-limeBrand text-black rounded-xl text-xs font-bold shadow-lg shadow-limeBrand/20 active:scale-95 transition">
+            即刻走秀
+          </button>
         </div>
 
+        <!-- 小眾風格膠囊 -->
         <div class="flex space-x-2 overflow-x-auto no-scrollbar text-xs">
           <button class="px-4 py-1.5 rounded-full font-bold bg-limeBrand text-black flex-shrink-0">All</button>
-          <button class="px-4 py-1.5 rounded-full font-medium bg-darkCard text-gray-300 border border-darkBorder flex-shrink-0">Men's</button>
-          <button class="px-4 py-1.5 rounded-full font-medium bg-darkCard text-gray-300 border border-darkBorder flex-shrink-0">Women's</button>
+          <button class="px-4 py-1.5 rounded-full font-medium bg-darkCard text-gray-300 border border-darkBorder flex-shrink-0">Gorpcore</button>
+          <button class="px-4 py-1.5 rounded-full font-medium bg-darkCard text-gray-300 border border-darkBorder flex-shrink-0">City Boy</button>
+          <button class="px-4 py-1.5 rounded-full font-medium bg-darkCard text-gray-300 border border-darkBorder flex-shrink-0">二手古著</button>
+          <button class="px-4 py-1.5 rounded-full font-medium bg-darkCard text-gray-300 border border-darkBorder flex-shrink-0">極簡通勤</button>
         </div>
 
+        <!-- 穿搭卡片瀑布流 -->
         <div class="grid grid-cols-2 gap-3">
-          <div onclick="goToScreen(3)" class="bg-darkCard rounded-2xl overflow-hidden border border-darkBorder p-2 flex flex-col active:scale-95 transition">
+          <div onclick="goToScreen(3)" class="bg-darkCard rounded-2xl overflow-hidden border border-darkBorder p-2 flex flex-col active:scale-95 transition cursor-pointer">
             <div class="h-44 rounded-xl bg-neutral-800 overflow-hidden relative">
               <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop" class="w-full h-full object-cover" alt="Outfit">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur text-[10px] font-mono text-limeBrand font-bold">3s Loop</div>
               <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 flex items-center justify-center">
-                <i data-lucide="heart" class="w-3 h-3 text-white"></i>
+                <i data-lucide="bookmark" class="w-3 h-3 text-white"></i>
               </div>
             </div>
             <div class="mt-2 px-1">
               <div class="text-xs font-bold text-white truncate">Lavender Hair Fashion</div>
-              <div class="text-xs font-bold text-limeBrand mt-0.5">$10.50</div>
+              <div class="text-[11px] text-gray-400 mt-0.5">@creator_01 • 168cm</div>
             </div>
           </div>
 
-          <div class="bg-darkCard rounded-2xl overflow-hidden border border-darkBorder p-2 flex flex-col active:scale-95 transition">
+          <div class="bg-darkCard rounded-2xl overflow-hidden border border-darkBorder p-2 flex flex-col active:scale-95 transition cursor-pointer">
             <div class="h-44 rounded-xl bg-neutral-800 overflow-hidden relative">
               <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&auto=format&fit=crop" class="w-full h-full object-cover" alt="Outfit">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur text-[10px] font-mono text-limeBrand font-bold">3s Loop</div>
               <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 flex items-center justify-center">
-                <i data-lucide="heart" class="w-3 h-3 text-white"></i>
+                <i data-lucide="bookmark" class="w-3 h-3 text-white"></i>
               </div>
             </div>
             <div class="mt-2 px-1">
-              <div class="text-xs font-bold text-white truncate">Fashionable Ensemble</div>
-              <div class="text-xs font-bold text-limeBrand mt-0.5">$10.50</div>
+              <div class="text-xs font-bold text-white truncate">City Boy 寬鬆混搭</div>
+              <div class="text-[11px] text-gray-400 mt-0.5">@kai_urban • 178cm</div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- 底部導覽列 -->
       <div class="fixed bottom-0 left-0 right-0 h-16 bg-darkBg/95 backdrop-blur border-t border-darkBorder flex justify-around items-center px-4 z-40">
-        <button class="text-limeBrand"><i data-lucide="compass" class="w-5 h-5"></i></button>
-        <button class="text-gray-400"><i data-lucide="search" class="w-5 h-5"></i></button>
-        <button onclick="goToScreen(3)" class="w-11 h-11 -mt-5 rounded-full bg-limeBrand text-black flex items-center justify-center shadow-lg shadow-limeBrand/30 font-bold">
-          <i data-lucide="plus" class="w-6 h-6 stroke-[3]"></i>
+        <button onclick="goToScreen(2)" class="text-limeBrand flex flex-col items-center"><i data-lucide="compass" class="w-5 h-5"></i><span class="text-[9px] mt-0.5 font-bold">探索</span></button>
+        <button class="text-gray-400 flex flex-col items-center"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[9px] mt-0.5">搜尋</span></button>
+        <button onclick="openCameraModal()" class="w-11 h-11 -mt-5 rounded-full bg-limeBrand text-black flex items-center justify-center shadow-lg shadow-limeBrand/30 font-bold active:scale-90 transition">
+          <i data-lucide="video" class="w-6 h-6"></i>
         </button>
-        <button class="text-gray-400"><i data-lucide="bookmark" class="w-5 h-5"></i></button>
-        <button class="text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></button>
+        <button onclick="goToScreen(4)" class="text-gray-400 hover:text-white flex flex-col items-center"><i data-lucide="shirt" class="w-5 h-5"></i><span class="text-[9px] mt-0.5">衣櫥</span></button>
+        <button onclick="goToScreen(4)" class="text-gray-400 hover:text-white flex flex-col items-center"><i data-lucide="user" class="w-5 h-5"></i><span class="text-[9px] mt-0.5">個人</span></button>
       </div>
     </div>
 
-    <!-- 畫面 3: 單品細節與伸展台 (Details) -->
+    <!-- ==============================================
+         畫面 3: 穿搭詳情與互動標籤 (Look Details)
+    =============================================== -->
     <div id="screen-3" class="min-h-screen bg-darkBg text-white flex-col hidden justify-between pb-6">
       <div class="px-5 pt-4 pb-2 flex justify-between items-center z-10">
         <button onclick="goToScreen(2)" class="w-8 h-8 rounded-full bg-darkCard border border-darkBorder flex items-center justify-center text-white">
           <i data-lucide="chevron-left" class="w-4 h-4"></i>
         </button>
-        <div class="text-xs font-bold text-gray-300">Product Details</div>
+        <div class="text-xs font-bold text-gray-300">Runway Look Details</div>
         <button class="w-8 h-8 rounded-full bg-darkCard border border-darkBorder flex items-center justify-center text-white">
-          <i data-lucide="more-horizontal" class="w-4 h-4"></i>
+          <i data-lucide="share-2" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <div class="relative flex-1 flex flex-col items-center justify-center my-4">
+      <!-- 模特兒展示區 (支援點擊圖片顯示/隱藏單品座標標籤) -->
+      <div onclick="toggleTags()" class="relative flex-1 flex flex-col items-center justify-center my-4 cursor-pointer">
         <div class="absolute bottom-2 w-64 h-16 border border-limeBrand/60 rounded-full runway-ring"></div>
         <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop" class="w-[240px] h-[300px] object-cover rounded-2xl relative z-10 shadow-2xl" alt="Model">
+        
+        <!-- 身上單品 Tag 座標點 -->
+        <div id="item-tag-1" class="absolute z-20 top-24 left-24 tag-point flex items-center">
+          <span class="w-3.5 h-3.5 rounded-full bg-limeBrand border-2 border-black"></span>
+          <span class="ml-1.5 px-2 py-0.5 bg-black/80 backdrop-blur border border-limeBrand/50 rounded-md text-[10px] text-limeBrand font-bold">Vintage 寬版夾克</span>
+        </div>
+        <div id="item-tag-2" class="absolute z-20 bottom-24 right-20 tag-point flex items-center">
+          <span class="w-3.5 h-3.5 rounded-full bg-limeBrand border-2 border-black"></span>
+          <span class="ml-1.5 px-2 py-0.5 bg-black/80 backdrop-blur border border-limeBrand/50 rounded-md text-[10px] text-limeBrand font-bold">落地西裝褲</span>
+        </div>
+
+        <div class="absolute bottom-4 z-20 bg-black/60 px-2.5 py-1 rounded-full text-[10px] text-gray-300">
+          💡 點擊照片可隱藏/顯示單品標籤
+        </div>
       </div>
 
+      <!-- 底部抽屜卡片 -->
       <div class="bg-darkCard border-t border-darkBorder rounded-t-[32px] p-6 space-y-4">
         <div class="flex justify-between items-start">
           <div>
             <h3 class="text-lg font-bold text-white">Lavender Hair Fashion</h3>
-            <div class="text-sm text-limeBrand font-bold mt-0.5">$10.50</div>
+            <div class="text-xs text-limeBrand font-medium mt-0.5">風格：City Pop / 街頭混搭</div>
           </div>
-          <button class="text-gray-400"><i data-lucide="share-2" class="w-5 h-5"></i></button>
-        </div>
-
-        <div class="flex space-x-2.5">
-          <button class="w-9 h-9 rounded-full bg-darkBg border border-darkBorder flex items-center justify-center text-xs font-bold text-gray-300">XS</button>
-          <button class="w-9 h-9 rounded-full bg-limeBrand text-black flex items-center justify-center text-xs font-bold">S</button>
-          <button class="w-9 h-9 rounded-full bg-darkBg border border-darkBorder flex items-center justify-center text-xs font-bold text-gray-300">M</button>
-          <button class="w-9 h-9 rounded-full bg-darkBg border border-darkBorder flex items-center justify-center text-xs font-bold text-gray-300">L</button>
+          <button onclick="this.classList.toggle('text-limeBrand')" class="text-gray-400 p-2 rounded-full bg-darkBg border border-darkBorder">
+            <i data-lucide="heart" class="w-5 h-5"></i>
+          </button>
         </div>
 
         <div>
-          <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Description</div>
+          <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2">穿搭單品標籤 (Item Tags)</div>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="px-3 py-1 rounded-full bg-darkBg border border-darkBorder text-gray-300">🧥 Vintage 寬版夾克</span>
+            <span class="px-3 py-1 rounded-full bg-darkBg border border-darkBorder text-gray-300">👖 落地深灰西裝褲</span>
+            <span class="px-3 py-1 rounded-full bg-darkBg border border-darkBorder text-gray-300">👟 Salomon XT-6</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">穿搭理念 Description</div>
           <p class="text-xs text-gray-300 leading-relaxed mt-1">
-            A stylish street-pop outfit with lavender hair vibe with an effortless cool glamour that immediately drives references.
+            今天下雨出門隨手搭的俐落層次，不用花太多時間整理，隨性套上一件寬版大衣就能擁有好比例。
           </p>
         </div>
 
-        <button onclick="alert('已成功加入願望清單！')" class="w-full py-3.5 bg-limeBrand text-black font-bold rounded-2xl text-xs shadow-lg shadow-limeBrand/20 active:scale-95 transition">
-          Add to Cart
+        <button onclick="alert('已成功將此穿搭收藏至你的靈感衣櫥！')" class="w-full py-3.5 bg-limeBrand text-black font-bold rounded-2xl text-xs shadow-lg shadow-limeBrand/20 active:scale-95 transition flex items-center justify-center space-x-1.5">
+          <i data-lucide="bookmark" class="w-4 h-4 fill-black"></i>
+          <span>收藏此套穿搭靈感 (Save Look)</span>
         </button>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         畫面 4: 個人風格與數位衣櫥 (Digital Closet)
+    =============================================== -->
+    <div id="screen-4" class="min-h-screen bg-darkBg text-white flex-col hidden pb-24">
+      <div class="px-5 pt-4 pb-2 flex justify-between items-center">
+        <h2 class="text-sm font-bold text-limeBrand font-mono tracking-widest uppercase">MY DIGITAL CLOSET</h2>
+        <button class="p-2 rounded-full bg-darkCard border border-darkBorder text-gray-300">
+          <i data-lucide="settings" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="px-5 space-y-4 mt-3">
+        <!-- 個人成就卡片 -->
+        <div class="p-4 rounded-3xl bg-darkCard border border-darkBorder flex items-center space-x-3.5">
+          <div class="w-14 h-14 rounded-full bg-limeBrand text-black font-black text-xl flex items-center justify-center">
+            ME
+          </div>
+          <div>
+            <div class="font-bold text-white text-base">Creator Style Profile</div>
+            <div class="text-xs text-limeBrand font-medium mt-0.5">🔥 連續登場 5 天 • Gorpcore 探索者</div>
+            <div class="text-[11px] text-gray-400 mt-1">已記錄 18 件穿搭單品 • 24 次登場</div>
+          </div>
+        </div>
+
+        <!-- 單品分類選單 -->
+        <div class="flex space-x-2 text-xs">
+          <button class="px-3.5 py-1.5 rounded-full bg-limeBrand text-black font-bold">全部 (18)</button>
+          <button class="px-3.5 py-1.5 rounded-full bg-darkCard border border-darkBorder text-gray-300">外套 (6)</button>
+          <button class="px-3.5 py-1.5 rounded-full bg-darkCard border border-darkBorder text-gray-300">褲裝 (5)</button>
+          <button class="px-3.5 py-1.5 rounded-full bg-darkCard border border-darkBorder text-gray-300">鞋履 (4)</button>
+        </div>
+
+        <!-- 數位單品庫網格 -->
+        <div class="grid grid-cols-3 gap-2.5">
+          <div class="aspect-square bg-darkCard rounded-2xl border border-darkBorder p-2.5 flex flex-col justify-between items-center text-center">
+            <span class="text-[10px] text-limeBrand font-mono">ARC'TERYX</span>
+            <i data-lucide="shirt" class="w-8 h-8 text-gray-300 my-auto"></i>
+            <span class="text-[10px] text-gray-300 truncate w-full">Beta LT 夾克</span>
+          </div>
+          <div class="aspect-square bg-darkCard rounded-2xl border border-darkBorder p-2.5 flex flex-col justify-between items-center text-center">
+            <span class="text-[10px] text-limeBrand font-mono">SALOMON</span>
+            <i data-lucide="footprints" class="w-8 h-8 text-gray-300 my-auto"></i>
+            <span class="text-[10px] text-gray-300 truncate w-full">XT-6 越野鞋</span>
+          </div>
+          <div class="aspect-square bg-darkCard rounded-2xl border border-darkBorder p-2.5 flex flex-col justify-between items-center text-center">
+            <span class="text-[10px] text-limeBrand font-mono">VINTAGE</span>
+            <i data-lucide="watch" class="w-8 h-8 text-gray-300 my-auto"></i>
+            <span class="text-[10px] text-gray-300 truncate w-full">軍規石英錶</span>
+          </div>
+          <div class="aspect-square bg-darkCard rounded-2xl border border-darkBorder p-2.5 flex flex-col justify-between items-center text-center">
+            <span class="text-[10px] text-limeBrand font-mono">CARHARTT</span>
+            <i data-lucide="scissors" class="w-8 h-8 text-gray-300 my-auto"></i>
+            <span class="text-[10px] text-gray-300 truncate w-full">雙膝伐木褲</span>
+          </div>
+          <div class="aspect-square bg-darkCard rounded-2xl border border-dashed border-gray-600 p-2.5 flex flex-col justify-center items-center text-center cursor-pointer">
+            <i data-lucide="plus" class="w-6 h-6 text-limeBrand mb-1"></i>
+            <span class="text-[10px] text-limeBrand font-bold">記錄新單品</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部導覽列 -->
+      <div class="fixed bottom-0 left-0 right-0 h-16 bg-darkBg/95 backdrop-blur border-t border-darkBorder flex justify-around items-center px-4 z-40">
+        <button onclick="goToScreen(2)" class="text-gray-400 hover:text-white flex flex-col items-center"><i data-lucide="compass" class="w-5 h-5"></i><span class="text-[9px] mt-0.5">探索</span></button>
+        <button class="text-gray-400 flex flex-col items-center"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[9px] mt-0.5">搜尋</span></button>
+        <button onclick="openCameraModal()" class="w-11 h-11 -mt-5 rounded-full bg-limeBrand text-black flex items-center justify-center shadow-lg shadow-limeBrand/30 font-bold active:scale-90 transition">
+          <i data-lucide="video" class="w-6 h-6"></i>
+        </button>
+        <button onclick="goToScreen(4)" class="text-limeBrand flex flex-col items-center"><i data-lucide="shirt" class="w-5 h-5"></i><span class="text-[9px] mt-0.5 font-bold">衣櫥</span></button>
+        <button onclick="goToScreen(4)" class="text-gray-400 hover:text-white flex flex-col items-center"><i data-lucide="user" class="w-5 h-5"></i><span class="text-[9px] mt-0.5">個人</span></button>
       </div>
     </div>
 
   </div>
 
+  <!-- ==============================================
+       彈窗：3 秒伸展台相機模擬器 (Runway Camera Modal)
+  =============================================== -->
+  <div id="camera-modal" class="fixed inset-0 bg-black/95 z-50 flex flex-col justify-between p-5 hidden">
+    <!-- 頂部計時進度條 -->
+    <div>
+      <div class="flex justify-between items-center mb-2">
+        <button onclick="closeCameraModal()" class="p-2 rounded-full bg-darkCard text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <span class="text-xs font-bold text-limeBrand uppercase font-mono tracking-wider">3s RUNWAY RECORD</span>
+        <button class="p-2 rounded-full bg-darkCard text-white"><i data-lucide="sparkles" class="w-4 h-4"></i></button>
+      </div>
+      <div class="w-full h-1 bg-white/20 rounded-full overflow-hidden">
+        <div id="cam-progress" class="h-full bg-limeBrand w-0 transition-all duration-100 ease-linear"></div>
+      </div>
+    </div>
+
+    <!-- 觀景窗與 AI 骨架引導 -->
+    <div class="relative flex-1 bg-darkCard rounded-3xl border border-darkBorder my-3 flex items-center justify-center overflow-hidden">
+      <i data-lucide="user" class="w-24 h-24 text-white/20"></i>
+      <svg class="absolute inset-0 w-full h-full opacity-40 stroke-limeBrand pointer-events-none" viewBox="0 0 100 100" fill="none" stroke-width="0.8">
+        <circle cx="50" cy="22" r="7" stroke-dasharray="2,2"/>
+        <line x1="50" y1="29" x2="50" y2="58" stroke-dasharray="2,2"/>
+        <line x1="32" y1="36" x2="68" y2="36" stroke-dasharray="2,2"/>
+        <line x1="50" y1="58" x2="36" y2="86" stroke-dasharray="2,2"/>
+        <line x1="50" y1="58" x2="64" y2="86" stroke-dasharray="2,2"/>
+      </svg>
+      <div class="absolute bottom-3 bg-black/60 px-3 py-1 rounded-full text-[10px] text-limeBrand font-medium">
+        AI 骨架引導開啟中 • 站好姿勢倒數 3 秒
+      </div>
+    </div>
+
+    <!-- 底部快門 -->
+    <div class="flex flex-col items-center space-y-3 pb-2">
+      <div class="flex space-x-4 text-xs font-medium text-gray-400">
+        <span class="text-limeBrand font-bold border-b border-limeBrand pb-0.5">3秒走秀</span>
+        <span>鏡面快拍</span>
+        <span>情境雜誌</span>
+      </div>
+      <button onclick="startRecordingSimulation()" class="w-16 h-16 rounded-full border-4 border-limeBrand flex items-center justify-center p-1 active:scale-90 transition">
+        <div id="shutter-core" class="w-full h-full bg-limeBrand rounded-full flex items-center justify-center">
+          <i data-lucide="play" class="w-6 h-6 fill-black text-black"></i>
+        </div>
+      </button>
+    </div>
+  </div>
+
   <script>
     lucide.createIcons();
-    function goToScreen(num) {
-      document.getElementById('screen-1').classList.add('hidden');
-      document.getElementById('screen-2').classList.add('hidden');
-      document.getElementById('screen-3').classList.add('hidden');
-      document.getElementById(`screen-${num}`).classList.remove('hidden');
+
+    // 迎賓輪播資料
+    let currentSlide = 0;
+    const slidesData = [
+      {
+        badge: "Step 01 / 03 • 日常走秀",
+        title: "Discover trendy<br/>outfits and build your<br/>unique look<br/>effortlessly.",
+        desc: "3 秒快速快拍，不需要複雜修圖，展現最真實的個人日常美學。",
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=700&auto=format&fit=crop",
+        btnText: "下一頁 Next (1/3)"
+      },
+      {
+        badge: "Step 02 / 03 • 小眾圈子",
+        title: "Micro-Style<br/>Communities for<br/>Real Creators.",
+        desc: "打破演算法焦慮，Gorpcore、City Boy、二手古著都能找到懂你的同好。",
+        image: "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=700&auto=format&fit=crop",
+        btnText: "下一頁 Next (2/3)"
+      },
+      {
+        badge: "Step 03 / 03 • 隨性不隨便",
+        title: "Your Daily Runway,<br/>Ready Whenever<br/>You Are.",
+        desc: "下樓買咖啡、通勤電梯鏡面，隨時隨地開啟屬於你的伸展台。",
+        image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=700&auto=format&fit=crop",
+        btnText: "即刻登場 Get Started 🚀"
+      }
+    ];
+
+    // 手機觸控滑動支援
+    let touchStartX = 0;
+    function handleTouchStart(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }
+    function handleTouchEnd(e) {
+      let touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) {
+        nextSlide(); // 向左滑 -> 下一頁
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < 2) {
+        currentSlide++;
+        updateSlideUI();
+      } else {
+        goToScreen(2);
+      }
+    }
+
+    function updateSlideUI() {
+      const data = slidesData[currentSlide];
+      document.getElementById('slide-step-badge').innerText = data.badge;
+      document.getElementById('slide-title').innerHTML = data.title;
+      document.getElementById('slide-desc').innerText = data.desc;
+      document.getElementById('slide-image').src = data.image;
+      document.getElementById('slide-btn-text').innerText = data.btnText;
 
       for (let i = 1; i <= 3; i++) {
-        const btn = document.getElementById(`btn-tab-${i}`);
-        if (i === num) {
-          btn.className = "px-2.5 py-0.5 rounded-full font-bold bg-limeBrand text-black";
+        const bar = document.getElementById(`step-bar-${i}`);
+        bar.className = (i - 1 <= currentSlide) 
+          ? "h-1.5 bg-black rounded-full flex-1 transition-all" 
+          : "h-1.5 bg-black/25 rounded-full flex-1 transition-all";
+      }
+    }
+
+    // 畫面切換
+    function goToScreen(num) {
+      for (let i = 1; i <= 4; i++) {
+        const scr = document.getElementById(`screen-${i}`);
+        if (scr) scr.classList.add('hidden');
+        const tab = document.getElementById(`btn-tab-${i}`);
+        if (tab) tab.className = "px-2.5 py-0.5 rounded-full text-gray-400";
+      }
+
+      document.getElementById(`screen-${num}`).classList.remove('hidden');
+      const activeTab = document.getElementById(`btn-tab-${num}`);
+      if (activeTab) activeTab.className = "px-2.5 py-0.5 rounded-full font-bold bg-limeBrand text-black";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 穿搭標籤顯示/隱藏切換
+    let showTags = true;
+    function toggleTags() {
+      showTags = !showTags;
+      document.getElementById('item-tag-1').style.display = showTags ? 'flex' : 'none';
+      document.getElementById('item-tag-2').style.display = showTags ? 'flex' : 'none';
+    }
+
+    // 相機模擬器開關
+    function openCameraModal() {
+      document.getElementById('camera-modal').classList.remove('hidden');
+    }
+    function closeCameraModal() {
+      document.getElementById('camera-modal').classList.add('hidden');
+    }
+
+    // 3 秒錄影倒數模擬
+    let isRec = false;
+    function startRecordingSimulation() {
+      if (isRec) return;
+      isRec = true;
+      const bar = document.getElementById('cam-progress');
+      const core = document.getElementById('shutter-core');
+      core.className = "w-full h-full bg-red-500 rounded-full flex items-center justify-center animate-pulse";
+
+      let start = null;
+      function step(timestamp) {
+        if (!start) start = timestamp;
+        let progress = Math.min((timestamp - start) / 3000, 1);
+        bar.style.width = (progress * 100) + '%';
+        if (progress < 1) {
+          requestAnimationFrame(step);
         } else {
-          btn.className = "px-2.5 py-0.5 rounded-full text-gray-400";
+          isRec = false;
+          bar.style.width = '0%';
+          core.className = "w-full h-full bg-limeBrand rounded-full flex items-center justify-center";
+          closeCameraModal();
+          alert('🎉 3秒日常走秀拍攝完成！已套用冷調濾鏡並儲存至數位衣櫥。');
+          goToScreen(4);
         }
       }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      requestAnimationFrame(step);
     }
   </script>
 </body>
