@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DAILY RUNWAY - 穿搭日常</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            limeBrand: '#91E000',
+            darkBg: '#121413',
+            darkCard: '#1E2220',
+            darkBorder: '#2A302D',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulse-ring {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+    .runway-ring { animation: pulse-ring 3s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-darkBg text-white min-h-screen flex flex-col justify-between select-none font-sans overflow-x-hidden">
+
+  <!-- 頂部測試切換選單（方便手機測試） -->
+  <div class="fixed top-2 left-1/2 -translate-x-1/2 z-50 flex space-x-1.5 bg-black/80 backdrop-blur px-3 py-1.5 rounded-full border border-darkBorder text-[11px]">
+    <button onclick="goToScreen(1)" id="btn-tab-1" class="px-2.5 py-0.5 rounded-full font-bold bg-limeBrand text-black">1. 歡迎</button>
+    <button onclick="goToScreen(2)" id="btn-tab-2" class="px-2.5 py-0.5 rounded-full text-gray-400">2. 首頁</button>
+    <button onclick="goToScreen(3)" id="btn-tab-3" class="px-2.5 py-0.5 rounded-full text-gray-400">3. 詳情</button>
+  </div>
+
+  <!-- 主容器 -->
+  <div class="w-full min-h-screen flex flex-col pt-8">
+
+    <!-- 畫面 1: 歡迎引導頁 (Onboarding) -->
+    <div id="screen-1" class="min-h-screen bg-limeBrand text-black p-6 flex flex-col justify-between relative">
+      <div class="pt-6 flex items-center justify-between">
+        <div class="flex space-x-1.5 w-1/2">
+          <div class="h-1.5 bg-black rounded-full flex-1"></div>
+          <div class="h-1.5 bg-black/20 rounded-full flex-1"></div>
+          <div class="h-1.5 bg-black/20 rounded-full flex-1"></div>
+        </div>
+        <button onclick="goToScreen(2)" class="text-xs font-bold text-black/70">Skip</button>
+      </div>
+
+      <div class="mt-8 z-10">
+        <h1 class="text-3xl font-black leading-tight text-neutral-900 tracking-tight">
+          Discover trendy<br/>outfits and build your<br/>unique look<br/>effortlessly.
+        </h1>
+        <button onclick="goToScreen(2)" class="mt-5 px-6 py-3 bg-black text-white rounded-full text-xs font-bold flex items-center space-x-2 shadow-xl">
+          <span>Get Started</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
+        </button>
+      </div>
+
+      <div class="relative flex items-end justify-center overflow-hidden -mx-6 -mb-6 mt-4">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=700&auto=format&fit=crop" class="w-[290px] h-[360px] object-cover rounded-t-full drop-shadow-2xl" alt="Model">
+      </div>
+    </div>
+
+    <!-- 畫面 2: 個人化靈感首頁 (Feed) -->
+    <div id="screen-2" class="min-h-screen bg-darkBg text-white flex-col hidden pb-24">
+      <div class="px-5 pt-4 pb-2 flex justify-between items-center">
+        <div class="flex items-center space-x-2.5">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop" class="w-9 h-9 rounded-full object-cover border border-limeBrand" alt="Avatar">
+          <div>
+            <div class="text-[10px] text-gray-400">Welcome back</div>
+            <div class="text-xs font-bold text-white">Dianne Russell</div>
+          </div>
+        </div>
+        <button class="w-8 h-8 rounded-full bg-darkCard border border-darkBorder flex items-center justify-center text-gray-300">
+          <i data-lucide="bell" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="px-5 space-y-4 mt-2">
+        <h2 class="text-xl font-bold">
+          Handpicked <span class="text-gray-400 font-normal">Looks</span><br/>Just for You
+        </h2>
+
+        <div class="flex items-center space-x-2 bg-darkCard border border-darkBorder rounded-2xl px-3 py-2 text-xs">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-limeBrand"></i>
+          <span class="text-gray-300 font-medium">California, USA</span>
+          <span class="text-gray-600">|</span>
+          <span class="text-gray-500 flex-1 truncate">Search here...</span>
+          <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400"></i>
+        </div>
+
+        <div class="rounded-2xl p-4 bg-gradient-to-r from-blue-900/60 via-purple-900/40 to-darkCard border border-darkBorder flex items-center justify-between">
+          <h3 class="text-base font-extrabold text-white">Discover<br/>New Trends</h3>
+          <img src="https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=300&auto=format&fit=crop" class="w-16 h-16 object-cover rounded-full border border-limeBrand/40" alt="Trend">
+        </div>
+
+        <div class="flex space-x-2 overflow-x-auto no-scrollbar text-xs">
+          <button class="px-4 py-1.5 rounded-full font-bold bg-limeBrand text-black flex-shrink-0">All</button>
+          <button class="px-4 py-1.5 rounded-full font-medium bg-darkCard text-gray-300 border border-darkBorder flex-shrink-0">Men's</button>
+          <button class="px-4 py-1.5 rounded-full font-medium bg-darkCard text-gray-300 border border-darkBorder flex-shrink-0">Women's</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div onclick="goToScreen(3)" class="bg-darkCard rounded-2xl overflow-hidden border border-darkBorder p-2 flex flex-col active:scale-95 transition">
+            <div class="h-44 rounded-xl bg-neutral-800 overflow-hidden relative">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop" class="w-full h-full object-cover" alt="Outfit">
+              <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 flex items-center justify-center">
+                <i data-lucide="heart" class="w-3 h-3 text-white"></i>
+              </div>
+            </div>
+            <div class="mt-2 px-1">
+              <div class="text-xs font-bold text-white truncate">Lavender Hair Fashion</div>
+              <div class="text-xs font-bold text-limeBrand mt-0.5">$10.50</div>
+            </div>
+          </div>
+
+          <div class="bg-darkCard rounded-2xl overflow-hidden border border-darkBorder p-2 flex flex-col active:scale-95 transition">
+            <div class="h-44 rounded-xl bg-neutral-800 overflow-hidden relative">
+              <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&auto=format&fit=crop" class="w-full h-full object-cover" alt="Outfit">
+              <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 flex items-center justify-center">
+                <i data-lucide="heart" class="w-3 h-3 text-white"></i>
+              </div>
+            </div>
+            <div class="mt-2 px-1">
+              <div class="text-xs font-bold text-white truncate">Fashionable Ensemble</div>
+              <div class="text-xs font-bold text-limeBrand mt-0.5">$10.50</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fixed bottom-0 left-0 right-0 h-16 bg-darkBg/95 backdrop-blur border-t border-darkBorder flex justify-around items-center px-4 z-40">
+        <button class="text-limeBrand"><i data-lucide="compass" class="w-5 h-5"></i></button>
+        <button class="text-gray-400"><i data-lucide="search" class="w-5 h-5"></i></button>
+        <button onclick="goToScreen(3)" class="w-11 h-11 -mt-5 rounded-full bg-limeBrand text-black flex items-center justify-center shadow-lg shadow-limeBrand/30 font-bold">
+          <i data-lucide="plus" class="w-6 h-6 stroke-[3]"></i>
+        </button>
+        <button class="text-gray-400"><i data-lucide="bookmark" class="w-5 h-5"></i></button>
+        <button class="text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></button>
+      </div>
+    </div>
+
+    <!-- 畫面 3: 單品細節與伸展台 (Details) -->
+    <div id="screen-3" class="min-h-screen bg-darkBg text-white flex-col hidden justify-between pb-6">
+      <div class="px-5 pt-4 pb-2 flex justify-between items-center z-10">
+        <button onclick="goToScreen(2)" class="w-8 h-8 rounded-full bg-darkCard border border-darkBorder flex items-center justify-center text-white">
+          <i data-lucide="chevron-left" class="w-4 h-4"></i>
+        </button>
+        <div class="text-xs font-bold text-gray-300">Product Details</div>
+        <button class="w-8 h-8 rounded-full bg-darkCard border border-darkBorder flex items-center justify-center text-white">
+          <i data-lucide="more-horizontal" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="relative flex-1 flex flex-col items-center justify-center my-4">
+        <div class="absolute bottom-2 w-64 h-16 border border-limeBrand/60 rounded-full runway-ring"></div>
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop" class="w-[240px] h-[300px] object-cover rounded-2xl relative z-10 shadow-2xl" alt="Model">
+      </div>
+
+      <div class="bg-darkCard border-t border-darkBorder rounded-t-[32px] p-6 space-y-4">
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 class="text-lg font-bold text-white">Lavender Hair Fashion</h3>
+            <div class="text-sm text-limeBrand font-bold mt-0.5">$10.50</div>
+          </div>
+          <button class="text-gray-400"><i data-lucide="share-2" class="w-5 h-5"></i></button>
+        </div>
+
+        <div class="flex space-x-2.5">
+          <button class="w-9 h-9 rounded-full bg-darkBg border border-darkBorder flex items-center justify-center text-xs font-bold text-gray-300">XS</button>
+          <button class="w-9 h-9 rounded-full bg-limeBrand text-black flex items-center justify-center text-xs font-bold">S</button>
+          <button class="w-9 h-9 rounded-full bg-darkBg border border-darkBorder flex items-center justify-center text-xs font-bold text-gray-300">M</button>
+          <button class="w-9 h-9 rounded-full bg-darkBg border border-darkBorder flex items-center justify-center text-xs font-bold text-gray-300">L</button>
+        </div>
+
+        <div>
+          <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Description</div>
+          <p class="text-xs text-gray-300 leading-relaxed mt-1">
+            A stylish street-pop outfit with lavender hair vibe with an effortless cool glamour that immediately drives references.
+          </p>
+        </div>
+
+        <button onclick="alert('已成功加入願望清單！')" class="w-full py-3.5 bg-limeBrand text-black font-bold rounded-2xl text-xs shadow-lg shadow-limeBrand/20 active:scale-95 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+    function goToScreen(num) {
+      document.getElementById('screen-1').classList.add('hidden');
+      document.getElementById('screen-2').classList.add('hidden');
+      document.getElementById('screen-3').classList.add('hidden');
+      document.getElementById(`screen-${num}`).classList.remove('hidden');
+
+      for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`btn-tab-${i}`);
+        if (i === num) {
+          btn.className = "px-2.5 py-0.5 rounded-full font-bold bg-limeBrand text-black";
+        } else {
+          btn.className = "px-2.5 py-0.5 rounded-full text-gray-400";
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
